@@ -18,7 +18,7 @@
   const contacts = Array.isArray(contactsPayload?.records) ? contactsPayload.records : [];
   const contactsBySigla = new Map(contacts.map((contact) => [contact.sigla, contact]));
   const siglaAliases = new Map([
-    ["DC", ["AD", "CH", "CR", "LA", "LH", "PR", "RU"]]
+    ["DC", ["AD", "CR", "LA", "LH"]]
   ]);
   const scheduleSpreadsheetId = "11ayJbQFmFPzLegFZHL8kPKCvudpPo60O4NyR3i7aofA";
   const scheduleSheetSources = [
