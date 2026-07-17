@@ -6,8 +6,16 @@ window.SAHMT_NOTICES = {
     {
       id: "aviso-principal",
       eyebrow: "Comunicado SAHMT",
-      title: "Bem-vindos a agenda SAHMT",
-      message: `Este espaco esta pronto para os avisos importantes da equipe. Edite este texto no arquivo notices.js e escolha, em activeId, qual aviso deseja exibir.`,
+      title: "💉 IDENTIFIQUE TODAS AS SERINGAS!",
+      message: `Rotule imediatamente após o preparo.
+
+🚫 Nunca utilize uma seringa sem identificação.
+
+✔ Confira o rótulo antes de cada administração.
+
+Uma etiqueta pode evitar um evento grave.
+
+Segurança do Paciente começa com você.`,
       accent: "gold"
     },
     {
