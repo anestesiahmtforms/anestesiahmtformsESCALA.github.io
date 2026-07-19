@@ -798,7 +798,7 @@
     elements.noticeModal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
 
-    let remaining = 10;
+    let remaining = 5;
     elements.noticeCountdown.textContent = `Fechamento liberado em ${remaining} segundos`;
 
     const countdown = window.setInterval(() => {
