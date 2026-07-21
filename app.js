@@ -13,6 +13,7 @@
     ]
   };
   const noticesPayload = window.SAHMT_NOTICES || fallbackNoticesPayload;
+  const skipOpeningNotice = new URLSearchParams(window.location.search).get("skipNotice") === "1";
 
   const siglaPattern = /(?:[A-Z]{2}|L2)(?:[/-](?:[A-Z]{2}|L2))*/g;
   const contacts = Array.isArray(contactsPayload?.records) ? contactsPayload.records : [];
@@ -187,7 +188,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260721-3", { updateViaCache: "none" }).catch(() => {});
+      navigator.serviceWorker.register("./service-worker.js?v=20260721-4", { updateViaCache: "none" }).catch(() => {});
     });
   }
 
@@ -801,6 +802,10 @@
   }
 
   function showOpeningNotice() {
+    if (skipOpeningNotice) {
+      return;
+    }
+
     const notices = Array.isArray(noticesPayload.notices) ? noticesPayload.notices : [];
     const activeNotice = noticesPayload.activeId === null
       ? null

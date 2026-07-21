@@ -1,9 +1,10 @@
-const CACHE_NAME = "sahmt-pwa-v37";
+const CACHE_NAME = "sahmt-pwa-v38";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./atualizar.html",
   "./atualizar-v2.html",
+  "./atualizar-v3.html",
   "./escala-ferias.html",
   "./escala-ferias-v2.html",
   "./styles.css",
@@ -14,6 +15,7 @@ const APP_SHELL = [
   "./contacts.js",
   "./manifest.webmanifest",
   "./escala-ferias-2026.pdf",
+  "./escala-ferias-2026-v2.pdf",
   "./sahmt_option1_clean.png",
   "./gestao_operacional.png",
   "./eventos/index.html",
