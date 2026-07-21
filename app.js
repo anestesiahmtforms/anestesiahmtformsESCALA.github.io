@@ -97,27 +97,22 @@
 
   showOpeningNotice();
 
-  try {
-    data = await loadScheduleData();
-  } catch (error) {
-    data = fallbackData;
-  }
+  data = fallbackData;
 
   if (!data || !Array.isArray(data.days) || data.days.length === 0) {
-    throw new Error("Dados da escala nao encontrados.");
+    try {
+      data = await loadScheduleDataWithTimeout(6000);
+    } catch (error) {
+      throw new Error("Dados da escala nao encontrados.");
+    }
   }
 
-  byDate = new Map(data.days.map((day) => [day.date, day]));
-  orderedDates = data.days.map((day) => day.date).sort();
+  applyScheduleData(data);
   const fallbackDate = clampKey(todayKey);
-  await hydrateSharedSiglaState();
-
-  elements.rangeLabel.textContent = `${formatShort(orderedDates[0])} - ${formatShort(orderedDates[orderedDates.length - 1])}`;
-  elements.siteBanner.href = data.siteUrl || defaultSiteUrl;
-
-  elements.dateInput.min = orderedDates[0];
-  elements.dateInput.max = orderedDates[orderedDates.length - 1];
   elements.dateInput.value = clampKey(fallbackDate);
+
+  // Shared highlights must never delay the local schedule display.
+  hydrateSharedSiglaState().then(() => render(elements.dateInput.value)).catch(() => {});
 
   elements.dateInput.addEventListener("change", () => {
     render(clampKey(elements.dateInput.value));
@@ -197,6 +192,31 @@
   }
 
   render(elements.dateInput.value);
+  refreshScheduleFromSheet();
+
+  function applyScheduleData(scheduleData) {
+    data = scheduleData;
+    byDate = new Map(data.days.map((day) => [day.date, day]));
+    orderedDates = data.days.map((day) => day.date).sort();
+    elements.rangeLabel.textContent = `${formatShort(orderedDates[0])} - ${formatShort(orderedDates[orderedDates.length - 1])}`;
+    elements.siteBanner.href = data.siteUrl || defaultSiteUrl;
+    elements.dateInput.min = orderedDates[0];
+    elements.dateInput.max = orderedDates[orderedDates.length - 1];
+  }
+
+  function refreshScheduleFromSheet() {
+    loadScheduleDataWithTimeout(12000)
+      .then((liveData) => {
+        if (!Array.isArray(liveData?.days) || !liveData.days.length) {
+          return;
+        }
+
+        const selectedDate = elements.dateInput.value;
+        applyScheduleData(liveData);
+        render(clampKey(selectedDate));
+      })
+      .catch(() => {});
+  }
 
   function render(dateKey) {
     elements.dateInput.value = dateKey;
@@ -1082,6 +1102,15 @@
       days: scheduleDays,
       vacations: vacationData.vacations
     };
+  }
+
+  function loadScheduleDataWithTimeout(timeoutMs) {
+    return Promise.race([
+      loadScheduleData(),
+      new Promise((_, reject) => {
+        window.setTimeout(() => reject(new Error("Tempo esgotado ao atualizar a escala.")), timeoutMs);
+      })
+    ]);
   }
 
   async function loadVacationData() {
