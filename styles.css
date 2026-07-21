@@ -997,12 +997,56 @@ button:hover,
   white-space: nowrap;
 }
 
-.pdf-viewer {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  border: 0;
-  background: #ffffff;
+.pdf-open-card {
+  align-self: center;
+  width: min(100% - 28px, 390px);
+  margin: 0 auto;
+  padding: 26px 22px;
+  border: 1px solid rgba(13, 80, 104, 0.14);
+  border-radius: 24px;
+  background: rgba(255, 253, 247, 0.94);
+  box-shadow: 0 18px 35px rgba(8, 44, 64, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.pdf-open-card__eyebrow {
+  margin: 0;
+  color: #0d6380;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pdf-open-card h2 {
+  margin: 8px 0 0;
+  color: #0b2844;
+  font-size: 1.16rem;
+}
+
+.pdf-open-card > p:not(.pdf-open-card__eyebrow) {
+  margin: 12px 0 0;
+  color: rgba(11, 40, 68, 0.8);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.pdf-open-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 1px solid rgba(193, 137, 14, 0.58);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff8c9 0%, #f7cf51 100%);
+  box-shadow: 0 7px 14px rgba(180, 119, 6, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  color: #563600;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-decoration: none;
 }
 
 @keyframes notice-arrival {
