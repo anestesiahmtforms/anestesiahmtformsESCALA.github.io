@@ -91,6 +91,10 @@
     elements.formattedDate.textContent = "Carregando escala...";
   }
 
+  if (elements.closeNoticeModal) {
+    elements.closeNoticeModal.addEventListener("click", closeNoticeModal);
+  }
+
   showOpeningNotice();
 
   try {
@@ -162,10 +166,6 @@
 
   if (elements.contactBackdrop) {
     elements.contactBackdrop.addEventListener("click", closeContactModal);
-  }
-
-  if (elements.closeNoticeModal) {
-    elements.closeNoticeModal.addEventListener("click", closeNoticeModal);
   }
 
   document.addEventListener("keydown", (event) => {
@@ -798,7 +798,7 @@
     elements.noticeModal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
 
-    let remaining = 5;
+    let remaining = 3;
     elements.noticeCountdown.textContent = `Fechamento liberado em ${remaining} segundos`;
 
     const countdown = window.setInterval(() => {
