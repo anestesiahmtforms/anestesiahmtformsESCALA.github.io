@@ -247,11 +247,11 @@
     elements.formattedDate.textContent = formatLong(day.date);
     elements.weekdayBadge.textContent = day.weekdayLabel;
     elements.emptyState.classList.add("hidden");
-    renderSiglas(day.siglas);
+    renderSiglas(day.siglas, day.weekdayLabel);
     renderVacationLabel(day.vacationLabel);
   }
 
-  function renderSiglas(siglas) {
+  function renderSiglas(siglas, weekdayLabel) {
     elements.siglasGrid.innerHTML = "";
     const activeDate = elements.dateInput.value;
     const vacationSiglas = getVacationSiglasForDate(activeDate);
@@ -269,7 +269,7 @@
       token.setAttribute("aria-label", `Abrir contato da sigla ${sigla}`);
       bindSiglaInteractions(token, sigla, activeDate);
 
-      const dcVacationSiglas = getDcVacationSiglas(sigla, vacationSiglas, day.weekdayLabel);
+      const dcVacationSiglas = getDcVacationSiglas(sigla, vacationSiglas, weekdayLabel);
       appendSiglaDisplay(token, sigla, vacationSiglas, vacationOrder, showVacationPositions);
 
       if (dcVacationSiglas.length) {
