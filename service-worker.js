@@ -1,4 +1,4 @@
-const CACHE_NAME = "sahmt-pwa-v39";
+const CACHE_NAME = "sahmt-pwa-v40";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -6,8 +6,11 @@ const APP_SHELL = [
   "./atualizar-v2.html",
   "./atualizar-v3.html",
   "./atualizar-v4.html",
+  "./atualizar-v5.html",
   "./escala-ferias.html",
   "./escala-ferias-v2.html",
+  "./escala-ferias-imagens.html",
+  "./escala-ferias-imagens.css",
   "./styles.css",
   "./app.js",
   "./sync-config.js",
@@ -18,6 +21,13 @@ const APP_SHELL = [
   "./escala-ferias-2026.pdf",
   "./escala-ferias-2026-v2.pdf",
   "./escala-ferias-2026-v3.pdf",
+  "./escala-imagens/segunda-2026.jpg",
+  "./escala-imagens/terca-2026.jpg",
+  "./escala-imagens/quarta-2026.jpg",
+  "./escala-imagens/quinta-2026.jpg",
+  "./escala-imagens/sexta-2026.jpg",
+  "./escala-imagens/sabado-2026.jpg",
+  "./escala-imagens/ferias-2026.jpg",
   "./sahmt_option1_clean.png",
   "./gestao_operacional.png",
   "./eventos/index.html",

@@ -21,6 +21,13 @@
   const siglaAliases = new Map([
     ["DC", ["AD", "CR", "LA", "LH"]]
   ]);
+  const dcAliasesByWeekday = new Map([
+    ["Segunda", ["CR", "LH"]],
+    ["Terca", ["CR", "LH", "AD"]],
+    ["Quarta", ["CR", "LH", "AD"]],
+    ["Quinta", ["CR", "LH"]],
+    ["Sexta", ["CR", "LA"]]
+  ]);
   const scheduleSpreadsheetId = "11ayJbQFmFPzLegFZHL8kPKCvudpPo60O4NyR3i7aofA";
   const scheduleSheetSources = [
     ["SEGUNDA 2026", "Segunda"],
@@ -188,7 +195,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260721-5", { updateViaCache: "none" }).catch(() => {});
+      navigator.serviceWorker.register("./service-worker.js?v=20260803-1", { updateViaCache: "none" }).catch(() => {});
     });
   }
 
@@ -262,7 +269,7 @@
       token.setAttribute("aria-label", `Abrir contato da sigla ${sigla}`);
       bindSiglaInteractions(token, sigla, activeDate);
 
-      const dcVacationSiglas = getDcVacationSiglas(sigla, vacationSiglas);
+      const dcVacationSiglas = getDcVacationSiglas(sigla, vacationSiglas, day.weekdayLabel);
       appendSiglaDisplay(token, sigla, vacationSiglas, vacationOrder, showVacationPositions);
 
       if (dcVacationSiglas.length) {
@@ -744,12 +751,12 @@
     return vacationSiglas.has(String(sigla || "").trim().toUpperCase());
   }
 
-  function getDcVacationSiglas(sigla, vacationSiglas) {
+  function getDcVacationSiglas(sigla, vacationSiglas, weekdayLabel) {
     if (sigla !== "DC" || !vacationSiglas || vacationSiglas.size === 0) {
       return [];
     }
 
-    return (siglaAliases.get("DC") || []).filter((value) => vacationSiglas.has(value));
+    return (dcAliasesByWeekday.get(weekdayLabel) || []).filter((value) => vacationSiglas.has(value));
   }
 
   function openTokenDetails(token) {
@@ -1052,16 +1059,16 @@
 
   async function loadScheduleData() {
     const scheduleDays = [];
-    const fallbackDaysByDate = new Map(
-      Array.isArray(fallbackData?.days)
-        ? fallbackData.days.map((day) => [day.date, day])
-        : []
-    );
     const vacationData = await loadVacationData();
     const vacationsByDate = buildVacationLookup(vacationData.vacations);
+    const scheduleRowsBySource = await Promise.all(
+      scheduleSheetSources.map(async ([sheetTitle, weekdayLabel]) => ({
+        weekdayLabel,
+        rows: await fetchScheduleSheetRows(sheetTitle)
+      }))
+    );
 
-    for (const [sheetTitle, weekdayLabel] of scheduleSheetSources) {
-      const rows = await fetchScheduleSheetRows(sheetTitle);
+    for (const { weekdayLabel, rows } of scheduleRowsBySource) {
       if (!rows.length) {
         continue;
       }
@@ -1081,12 +1088,12 @@
           return;
         }
 
-        const fallbackDay = fallbackDaysByDate.get(date);
         scheduleDays.push({
           date,
           weekdayLabel,
           siglas,
-          vacationLabel: vacationsByDate.get(date) || fallbackDay?.vacationLabel || null
+          // Once the live vacation tab was obtained, it is the source of truth.
+          vacationLabel: vacationsByDate.get(date) || null
         });
       });
     }
