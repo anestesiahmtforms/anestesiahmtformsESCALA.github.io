@@ -7,15 +7,7 @@ window.SAHMT_NOTICES = {
       id: "aviso-principal",
       eyebrow: "Comunicado SAHMT",
       title: "💉 IDENTIFIQUE TODAS AS SERINGAS!",
-      message: `Rotule imediatamente após o preparo.
-
-🚫 Nunca utilize uma seringa sem identificação.
-
-✔ Confira o rótulo antes de cada administração.
-
-Uma etiqueta pode evitar um evento grave.
-
-Segurança do Paciente começa com você.`,
+      message: `🚫 Nunca utilize uma seringa sem identificação.`,
       accent: "gold"
     },
     {
