@@ -195,7 +195,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260804-1", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260804-2", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -499,7 +499,9 @@
 
   async function pushSharedSiglaCheck(dateKey, sigla, marked) {
     const url = new URL(sharedStateEndpoint);
-    url.searchParams.set("action", "toggle");
+    // The server receives the intended state, not an ambiguous toggle. This
+    // makes unmarking persistent across every device that reads the sheet.
+    url.searchParams.set("action", "set");
     url.searchParams.set("spreadsheetId", scheduleSpreadsheetId);
     url.searchParams.set("sheetName", "DESTAQUES APP");
     url.searchParams.set("date", dateKey);
