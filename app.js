@@ -195,7 +195,9 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260803-1", { updateViaCache: "none" }).catch(() => {});
+      navigator.serviceWorker.register("./service-worker.js?v=20260803-2", { updateViaCache: "none" })
+        .then((registration) => registration.update())
+        .catch(() => {});
     });
   }
 
