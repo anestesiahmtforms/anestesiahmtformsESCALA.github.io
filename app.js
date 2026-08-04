@@ -195,7 +195,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260803-2", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260804-1", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -268,7 +268,8 @@
       const token = document.createElement("button");
       token.className = "sigla-token sigla-button";
       token.type = "button";
-      token.setAttribute("aria-label", `Abrir contato da sigla ${sigla}`);
+      token.setAttribute("aria-label", `Abrir contato da sigla ${sigla}. Mantenha pressionado por 3 segundos para marcar ou desmarcar.`);
+      token.title = "Toque para contato. Mantenha pressionado por 3 segundos para destacar.";
       bindSiglaInteractions(token, sigla, activeDate);
 
       const dcVacationSiglas = getDcVacationSiglas(sigla, vacationSiglas, weekdayLabel);
@@ -311,36 +312,50 @@
   }
 
   function bindSiglaInteractions(token, sigla, dateKey) {
-    let tapCount = 0;
-    let tapTimer = null;
-    let lastTapAt = 0;
+    const holdDurationMs = 3000;
+    let holdTimer = null;
+    let holdCompleted = false;
 
-    token.addEventListener("click", async () => {
-      const now = Date.now();
-
-      if (now - lastTapAt > 520) {
-        tapCount = 0;
+    const clearHold = () => {
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
       }
+      token.classList.remove("sigla-button--pressing");
+    };
 
-      lastTapAt = now;
-      tapCount += 1;
-
-      if (tapTimer) {
-        clearTimeout(tapTimer);
-      }
-
-      if (tapCount === 3) {
-        await toggleSiglaCheck(token, dateKey, sigla);
-        tapCount = 0;
-        tapTimer = null;
+    token.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) {
         return;
       }
 
-      tapTimer = setTimeout(() => {
+      holdCompleted = false;
+      token.setPointerCapture?.(event.pointerId);
+      token.classList.add("sigla-button--pressing");
+      holdTimer = window.setTimeout(async () => {
+        holdTimer = null;
+        holdCompleted = true;
+        token.classList.remove("sigla-button--pressing");
+        await toggleSiglaCheck(token, dateKey, sigla);
+      }, holdDurationMs);
+    });
+
+    token.addEventListener("pointerup", () => {
+      const wasLongPress = holdCompleted;
+      clearHold();
+
+      if (!wasLongPress) {
         openTokenDetails(sigla);
-        tapCount = 0;
-        tapTimer = null;
-      }, 360);
+      }
+    });
+
+    token.addEventListener("pointercancel", clearHold);
+    token.addEventListener("lostpointercapture", clearHold);
+    token.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTokenDetails(sigla);
+      }
     });
   }
 

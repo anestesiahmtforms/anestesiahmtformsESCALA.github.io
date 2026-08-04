@@ -346,7 +346,16 @@ button:hover,
 
 .sigla-button {
   cursor: pointer;
+  touch-action: manipulation;
   transition: transform 140ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.sigla-button--pressing {
+  transform: scale(0.94);
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.26),
+    0 0 18px rgba(59, 130, 246, 0.44),
+    inset 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
 .sigla-button:hover {
@@ -577,6 +586,9 @@ button:hover,
   position: fixed;
   inset: 0;
   z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
 }
 
 .contact-modal__backdrop {
@@ -587,18 +599,15 @@ button:hover,
 }
 
 .contact-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 430px;
+  position: relative;
+  width: min(100%, 430px);
   max-height: 78vh;
-  margin: 0 auto;
+  margin: 0;
   padding: 16px 14px 18px;
   overflow-y: auto;
-  border-radius: 24px 24px 0 0;
+  border-radius: 24px;
   background: linear-gradient(180deg, rgba(249, 244, 233, 0.98) 0%, rgba(237, 227, 207, 0.98) 100%);
-  box-shadow: 0 -18px 36px rgba(8, 18, 31, 0.24);
+  box-shadow: 0 18px 36px rgba(8, 18, 31, 0.24);
 }
 
 .contact-sheet__header,
