@@ -40,7 +40,7 @@
   ];
   const vacationSheetTitle = "FERIAS 2026";
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
-  const eventsUrl = "./eventos/index.html?embed=1&v=20260714-4";
+  const eventsUrl = "https://anestesiahmtforms2.github.io/anestesiahmtforms2eventos.github.io/?embed=1";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
   const clientIdStorageKey = "sahmt-client-id-v1";
@@ -195,7 +195,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260804-3", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260805-1", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
