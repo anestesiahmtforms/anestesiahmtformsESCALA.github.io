@@ -40,6 +40,7 @@
   ];
   const vacationSheetTitle = "FERIAS 2026";
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
+  const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsgest-o.github.io/";
   const eventsUrl = "https://anestesiahmtforms2.github.io/anestesiahmtforms2eventos.github.io/?embed=1&v=20260809-1";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
@@ -195,7 +196,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260809-1", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260809-2", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -209,7 +210,7 @@
     byDate = new Map(data.days.map((day) => [day.date, day]));
     orderedDates = data.days.map((day) => day.date).sort();
     elements.rangeLabel.textContent = `${formatShort(orderedDates[0])} - ${formatShort(orderedDates[orderedDates.length - 1])}`;
-    elements.siteBanner.href = data.siteUrl || defaultSiteUrl;
+    elements.siteBanner.href = managementSiteUrl;
     elements.dateInput.min = orderedDates[0];
     elements.dateInput.max = orderedDates[orderedDates.length - 1];
   }
