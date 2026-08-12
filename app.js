@@ -196,7 +196,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260809-3", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260812-1", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -316,6 +316,7 @@
     const holdDurationMs = 3000;
     let holdTimer = null;
     let holdCompleted = false;
+    let activePointerId = null;
 
     const clearHold = () => {
       if (holdTimer) {
@@ -330,8 +331,9 @@
         return;
       }
 
+      event.preventDefault();
       holdCompleted = false;
-      token.setPointerCapture?.(event.pointerId);
+      activePointerId = event.pointerId;
       token.classList.add("sigla-button--pressing");
       holdTimer = window.setTimeout(async () => {
         holdTimer = null;
@@ -341,17 +343,25 @@
       }, holdDurationMs);
     });
 
-    token.addEventListener("pointerup", () => {
+    token.addEventListener("pointerup", (event) => {
+      if (activePointerId !== null && event.pointerId !== activePointerId) {
+        return;
+      }
+
       const wasLongPress = holdCompleted;
       clearHold();
+      activePointerId = null;
 
       if (!wasLongPress) {
         openTokenDetails(sigla);
       }
     });
 
-    token.addEventListener("pointercancel", clearHold);
-    token.addEventListener("lostpointercapture", clearHold);
+    token.addEventListener("pointercancel", () => {
+      activePointerId = null;
+      clearHold();
+    });
+    token.addEventListener("contextmenu", (event) => event.preventDefault());
     token.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
