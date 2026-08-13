@@ -347,6 +347,8 @@ button:hover,
 .sigla-button {
   cursor: pointer;
   touch-action: manipulation;
+  -webkit-touch-callout: none;
+  user-select: none;
   transition: transform 140ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
