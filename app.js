@@ -196,7 +196,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260812-1", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260812-2", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -317,6 +317,7 @@
     let holdTimer = null;
     let holdCompleted = false;
     let activePointerId = null;
+    let pressStartedAt = 0;
 
     const clearHold = () => {
       if (holdTimer) {
@@ -334,6 +335,7 @@
       event.preventDefault();
       holdCompleted = false;
       activePointerId = event.pointerId;
+      pressStartedAt = performance.now();
       token.classList.add("sigla-button--pressing");
       holdTimer = window.setTimeout(async () => {
         holdTimer = null;
@@ -348,9 +350,12 @@
         return;
       }
 
-      const wasLongPress = holdCompleted;
+      // A long press is exclusive. The elapsed-time fallback covers mobile
+      // browsers that dispatch pointerup immediately before a busy timer runs.
+      const wasLongPress = holdCompleted || performance.now() - pressStartedAt >= holdDurationMs - 120;
       clearHold();
       activePointerId = null;
+      pressStartedAt = 0;
 
       if (!wasLongPress) {
         openTokenDetails(sigla);
@@ -359,6 +364,7 @@
 
     token.addEventListener("pointercancel", () => {
       activePointerId = null;
+      pressStartedAt = 0;
       clearHold();
     });
     token.addEventListener("contextmenu", (event) => event.preventDefault());
