@@ -42,6 +42,7 @@
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
   const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsGESTAO.github.io/";
   const eventsUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsEVENTOSDEESCALA.github.io/?embed=1&v=20260816-2";
+  const etiquetasUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsETIQUETA.github.io/?embed=1&skipNotice=1&v=20260816-1";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
   const clientIdStorageKey = "sahmt-client-id-v1";
@@ -77,9 +78,11 @@
     vacationCard: document.getElementById("vacationCard"),
     siteBanner: document.getElementById("siteBanner"),
     eventsLauncher: document.getElementById("eventsLauncher"),
+    etiquetasLauncher: document.getElementById("etiquetasLauncher"),
     eventsModal: document.getElementById("eventsModal"),
     eventsBackdrop: document.getElementById("eventsBackdrop"),
     closeEventsModal: document.getElementById("closeEventsModal"),
+    eventsTitle: document.getElementById("eventsTitle"),
     eventsFrame: document.getElementById("eventsFrame"),
     contactModal: document.getElementById("contactModal"),
     contactBackdrop: document.getElementById("contactBackdrop"),
@@ -157,7 +160,11 @@
   }
 
   if (elements.eventsLauncher) {
-    elements.eventsLauncher.addEventListener("click", openEventsModal);
+    elements.eventsLauncher.addEventListener("click", () => openEmbeddedApp(eventsUrl, "Gestao Operacional"));
+  }
+
+  if (elements.etiquetasLauncher) {
+    elements.etiquetasLauncher.addEventListener("click", () => openEmbeddedApp(etiquetasUrl, "Etiquetas SAHMT"));
   }
 
   if (elements.closeEventsModal) {
@@ -820,9 +827,15 @@
     updateBodyModalState();
   }
 
-  function openEventsModal() {
-    if (elements.eventsFrame && elements.eventsFrame.src !== new URL(eventsUrl, window.location.href).href) {
-      elements.eventsFrame.src = eventsUrl;
+  function openEmbeddedApp(appUrl, title) {
+    const normalizedUrl = new URL(appUrl, window.location.href).href;
+
+    if (elements.eventsTitle) {
+      elements.eventsTitle.textContent = title;
+    }
+
+    if (elements.eventsFrame && elements.eventsFrame.src !== normalizedUrl) {
+      elements.eventsFrame.src = normalizedUrl;
     }
 
     elements.eventsModal.classList.remove("hidden");
