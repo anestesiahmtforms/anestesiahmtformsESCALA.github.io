@@ -164,7 +164,7 @@
   }
 
   if (elements.etiquetasLauncher) {
-    elements.etiquetasLauncher.addEventListener("click", () => openEmbeddedApp(etiquetasUrl, "Etiquetas SAHMT"));
+    elements.etiquetasLauncher.addEventListener("click", () => openEmbeddedApp(etiquetasUrl, "Etiquetas SAHMT", { forceReload: true }));
   }
 
   if (elements.closeEventsModal) {
@@ -827,8 +827,12 @@
     updateBodyModalState();
   }
 
-  function openEmbeddedApp(appUrl, title) {
-    const normalizedUrl = new URL(appUrl, window.location.href).href;
+  function openEmbeddedApp(appUrl, title, options = {}) {
+    const targetUrl = new URL(appUrl, window.location.href);
+    if (options.forceReload) {
+      targetUrl.searchParams.set("launch", String(Date.now()));
+    }
+    const normalizedUrl = targetUrl.href;
 
     if (elements.eventsTitle) {
       elements.eventsTitle.textContent = title;
