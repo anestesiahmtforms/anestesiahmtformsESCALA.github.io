@@ -218,8 +218,6 @@ body.modal-open {
 
 .date-field {
   display: grid;
-  width: 100%;
-  min-width: 0;
   gap: 4px;
   font-size: 0.55rem;
   font-weight: 700;
@@ -227,8 +225,6 @@ body.modal-open {
 
 .date-field input {
   width: 100%;
-  min-width: 0;
-  max-width: 100%;
   border: 0;
   border-radius: 12px;
   padding: 8px 10px;
