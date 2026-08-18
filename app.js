@@ -42,6 +42,7 @@
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
   const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsGESTAO.github.io/?embed=1&from=escala";
   const eventsUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsEVENTOSDEESCALA.github.io/?embed=1&v=20260816-2";
+  const labelsUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsETIQUETA.github.io/?embed=1&from=escala";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
   const clientIdStorageKey = "sahmt-client-id-v1";
@@ -81,6 +82,11 @@
     eventsBackdrop: document.getElementById("eventsBackdrop"),
     closeEventsModal: document.getElementById("closeEventsModal"),
     eventsFrame: document.getElementById("eventsFrame"),
+    labelsLauncher: document.getElementById("labelsLauncher"),
+    labelsModal: document.getElementById("labelsModal"),
+    labelsBackdrop: document.getElementById("labelsBackdrop"),
+    closeLabelsModal: document.getElementById("closeLabelsModal"),
+    labelsFrame: document.getElementById("labelsFrame"),
     managementModal: document.getElementById("managementModal"),
     managementBackdrop: document.getElementById("managementBackdrop"),
     closeManagementModal: document.getElementById("closeManagementModal"),
@@ -164,6 +170,13 @@
     elements.eventsLauncher.addEventListener("click", openEventsModal);
   }
 
+  if (elements.labelsLauncher) {
+    elements.labelsLauncher.addEventListener("click", (event) => {
+      event.preventDefault();
+      openLabelsModal();
+    });
+  }
+
   if (elements.siteBanner) {
     elements.siteBanner.addEventListener("click", (event) => {
       event.preventDefault();
@@ -177,6 +190,14 @@
 
   if (elements.eventsBackdrop) {
     elements.eventsBackdrop.addEventListener("click", closeEventsModal);
+  }
+
+  if (elements.closeLabelsModal) {
+    elements.closeLabelsModal.addEventListener("click", closeLabelsModal);
+  }
+
+  if (elements.labelsBackdrop) {
+    elements.labelsBackdrop.addEventListener("click", closeLabelsModal);
   }
 
   if (elements.closeManagementModal) {
@@ -194,6 +215,7 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeEventsModal();
+      closeLabelsModal();
       closeManagementModal();
       closeContactModal();
     }
@@ -216,7 +238,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260818-1", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260818-2", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -856,6 +878,22 @@
     updateBodyModalState();
   }
 
+  function openLabelsModal() {
+    if (elements.labelsFrame && elements.labelsFrame.src !== new URL(labelsUrl, window.location.href).href) {
+      elements.labelsFrame.src = labelsUrl;
+    }
+
+    elements.labelsModal.classList.remove("hidden");
+    elements.labelsModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeLabelsModal() {
+    elements.labelsModal.classList.add("hidden");
+    elements.labelsModal.setAttribute("aria-hidden", "true");
+    updateBodyModalState();
+  }
+
   function openManagementModal() {
     if (elements.managementFrame && elements.managementFrame.src !== new URL(managementSiteUrl, window.location.href).href) {
       elements.managementFrame.src = managementSiteUrl;
@@ -876,6 +914,7 @@
     const hasOpenModal =
       !elements.contactModal.classList.contains("hidden") ||
       !elements.eventsModal.classList.contains("hidden") ||
+      !elements.labelsModal.classList.contains("hidden") ||
       !elements.managementModal.classList.contains("hidden") ||
       !elements.noticeModal.classList.contains("hidden");
     document.body.classList.toggle("modal-open", hasOpenModal);

@@ -98,10 +98,9 @@
               aria-label="Abrir escala e ferias 2026 em imagens"
             ><span class="vacation-file-link__scale">Escala</span><span class="vacation-file-link__vacation">/F&eacute;rias</span></a>
             <a
+              id="labelsLauncher"
               class="vacation-file-link vacation-file-link--labels"
               href="https://anestesiahmtforms.github.io/anestesiahmtformsETIQUETA.github.io/"
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label="Abrir aplicativo de Etiquetas"
             >ETIQUETAS</a>
           </div>
@@ -178,6 +177,29 @@
     </section>
   </div>
 
+  <div id="labelsModal" class="events-modal hidden" aria-hidden="true">
+    <div id="labelsBackdrop" class="events-modal__backdrop"></div>
+    <section class="events-sheet" role="dialog" aria-modal="true" aria-labelledby="labelsTitle">
+      <div class="events-sheet__header">
+        <div>
+          <h2 id="labelsTitle">Etiquetas SAHMT</h2>
+        </div>
+        <button id="closeLabelsModal" class="events-sheet__close" type="button" aria-label="Fechar Etiquetas">Fechar</button>
+      </div>
+
+      <div class="events-frame-wrap">
+        <iframe
+          id="labelsFrame"
+          class="events-frame"
+          title="Etiquetas SAHMT"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="clipboard-read; clipboard-write"
+        ></iframe>
+      </div>
+    </section>
+  </div>
+
   <div id="noticeModal" class="notice-modal hidden" aria-hidden="true">
     <div class="notice-modal__backdrop"></div>
     <section class="notice-card" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
@@ -196,6 +218,6 @@
   <script src="./contacts.js?v=20260803-2"></script>
   <script src="./sync-config.js?v=20260804-3"></script>
   <script src="./notices.js?v=20260803-2"></script>
-  <script src="./app.js?v=20260818-1"></script>
+  <script src="./app.js?v=20260818-2"></script>
 </body>
 </html>
