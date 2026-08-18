@@ -133,14 +133,7 @@
 
   <div id="eventsModal" class="events-modal hidden" aria-hidden="true">
     <div id="eventsBackdrop" class="events-modal__backdrop"></div>
-    <section class="events-sheet" role="dialog" aria-modal="true" aria-labelledby="eventsTitle">
-      <div class="events-sheet__header">
-        <div>
-          <h2 id="eventsTitle">Gestao Operacional</h2>
-        </div>
-        <button id="closeEventsModal" class="events-sheet__close" type="button" aria-label="Fechar Gestao Operacional">Fechar</button>
-      </div>
-
+    <section class="events-sheet" role="dialog" aria-modal="true" aria-label="Gestao Operacional">
       <div class="events-frame-wrap">
         <iframe
           id="eventsFrame"
@@ -151,19 +144,15 @@
           allow="clipboard-read; clipboard-write"
         ></iframe>
       </div>
+      <footer class="events-sheet__footer">
+        <button id="closeEventsModal" class="events-sheet__close" type="button" aria-label="Fechar Gestao Operacional">Fechar</button>
+      </footer>
     </section>
   </div>
 
   <div id="managementModal" class="events-modal hidden" aria-hidden="true">
     <div id="managementBackdrop" class="events-modal__backdrop"></div>
-    <section class="events-sheet" role="dialog" aria-modal="true" aria-labelledby="managementTitle">
-      <div class="events-sheet__header">
-        <div>
-          <h2 id="managementTitle">Segmento de Gestao</h2>
-        </div>
-        <button id="closeManagementModal" class="events-sheet__close" type="button" aria-label="Fechar Segmento de Gestao">Fechar</button>
-      </div>
-
+    <section class="events-sheet" role="dialog" aria-modal="true" aria-label="Segmento de Gestao">
       <div class="events-frame-wrap">
         <iframe
           id="managementFrame"
@@ -174,19 +163,15 @@
           allow="clipboard-read; clipboard-write"
         ></iframe>
       </div>
+      <footer class="events-sheet__footer">
+        <button id="closeManagementModal" class="events-sheet__close" type="button" aria-label="Fechar Segmento de Gestao">Fechar</button>
+      </footer>
     </section>
   </div>
 
   <div id="labelsModal" class="events-modal hidden" aria-hidden="true">
     <div id="labelsBackdrop" class="events-modal__backdrop"></div>
-    <section class="events-sheet" role="dialog" aria-modal="true" aria-labelledby="labelsTitle">
-      <div class="events-sheet__header">
-        <div>
-          <h2 id="labelsTitle">Etiquetas SAHMT</h2>
-        </div>
-        <button id="closeLabelsModal" class="events-sheet__close" type="button" aria-label="Fechar Etiquetas">Fechar</button>
-      </div>
-
+    <section class="events-sheet" role="dialog" aria-modal="true" aria-label="Etiquetas SAHMT">
       <div class="events-frame-wrap">
         <iframe
           id="labelsFrame"
@@ -197,6 +182,9 @@
           allow="clipboard-read; clipboard-write"
         ></iframe>
       </div>
+      <footer class="events-sheet__footer">
+        <button id="closeLabelsModal" class="events-sheet__close" type="button" aria-label="Fechar Etiquetas">Fechar</button>
+      </footer>
     </section>
   </div>
 
@@ -218,6 +206,6 @@
   <script src="./contacts.js?v=20260803-2"></script>
   <script src="./sync-config.js?v=20260804-3"></script>
   <script src="./notices.js?v=20260803-2"></script>
-  <script src="./app.js?v=20260818-2"></script>
+  <script src="./app.js?v=20260818-3"></script>
 </body>
 </html>
