@@ -40,9 +40,8 @@
   ];
   const vacationSheetTitle = "FERIAS 2026";
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
-  const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsGESTAO.github.io/";
+  const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsgest-o.github.io/?embed=1&from=escala";
   const eventsUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsEVENTOSDEESCALA.github.io/?embed=1&v=20260816-2";
-  const etiquetasUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsETIQUETA.github.io/?embed=1&skipNotice=1&v=20260816-1";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
   const clientIdStorageKey = "sahmt-client-id-v1";
@@ -78,12 +77,14 @@
     vacationCard: document.getElementById("vacationCard"),
     siteBanner: document.getElementById("siteBanner"),
     eventsLauncher: document.getElementById("eventsLauncher"),
-    etiquetasLauncher: document.getElementById("etiquetasLauncher"),
     eventsModal: document.getElementById("eventsModal"),
     eventsBackdrop: document.getElementById("eventsBackdrop"),
     closeEventsModal: document.getElementById("closeEventsModal"),
-    eventsTitle: document.getElementById("eventsTitle"),
     eventsFrame: document.getElementById("eventsFrame"),
+    managementModal: document.getElementById("managementModal"),
+    managementBackdrop: document.getElementById("managementBackdrop"),
+    closeManagementModal: document.getElementById("closeManagementModal"),
+    managementFrame: document.getElementById("managementFrame"),
     contactModal: document.getElementById("contactModal"),
     contactBackdrop: document.getElementById("contactBackdrop"),
     closeContactModal: document.getElementById("closeContactModal"),
@@ -160,11 +161,14 @@
   }
 
   if (elements.eventsLauncher) {
-    elements.eventsLauncher.addEventListener("click", () => openEmbeddedApp(eventsUrl, "Gestao Operacional"));
+    elements.eventsLauncher.addEventListener("click", openEventsModal);
   }
 
-  if (elements.etiquetasLauncher) {
-    elements.etiquetasLauncher.addEventListener("click", () => openEmbeddedApp(etiquetasUrl, "Etiquetas SAHMT", { forceReload: true }));
+  if (elements.siteBanner) {
+    elements.siteBanner.addEventListener("click", (event) => {
+      event.preventDefault();
+      openManagementModal();
+    });
   }
 
   if (elements.closeEventsModal) {
@@ -175,6 +179,14 @@
     elements.eventsBackdrop.addEventListener("click", closeEventsModal);
   }
 
+  if (elements.closeManagementModal) {
+    elements.closeManagementModal.addEventListener("click", closeManagementModal);
+  }
+
+  if (elements.managementBackdrop) {
+    elements.managementBackdrop.addEventListener("click", closeManagementModal);
+  }
+
   if (elements.contactBackdrop) {
     elements.contactBackdrop.addEventListener("click", closeContactModal);
   }
@@ -182,6 +194,7 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeEventsModal();
+      closeManagementModal();
       closeContactModal();
     }
   });
@@ -203,7 +216,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js?v=20260816-4", { updateViaCache: "none" })
+      navigator.serviceWorker.register("./service-worker.js?v=20260818-1", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
@@ -827,19 +840,9 @@
     updateBodyModalState();
   }
 
-  function openEmbeddedApp(appUrl, title, options = {}) {
-    const targetUrl = new URL(appUrl, window.location.href);
-    if (options.forceReload) {
-      targetUrl.searchParams.set("launch", String(Date.now()));
-    }
-    const normalizedUrl = targetUrl.href;
-
-    if (elements.eventsTitle) {
-      elements.eventsTitle.textContent = title;
-    }
-
-    if (elements.eventsFrame && elements.eventsFrame.src !== normalizedUrl) {
-      elements.eventsFrame.src = normalizedUrl;
+  function openEventsModal() {
+    if (elements.eventsFrame && elements.eventsFrame.src !== new URL(eventsUrl, window.location.href).href) {
+      elements.eventsFrame.src = eventsUrl;
     }
 
     elements.eventsModal.classList.remove("hidden");
@@ -853,10 +856,27 @@
     updateBodyModalState();
   }
 
+  function openManagementModal() {
+    if (elements.managementFrame && elements.managementFrame.src !== new URL(managementSiteUrl, window.location.href).href) {
+      elements.managementFrame.src = managementSiteUrl;
+    }
+
+    elements.managementModal.classList.remove("hidden");
+    elements.managementModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeManagementModal() {
+    elements.managementModal.classList.add("hidden");
+    elements.managementModal.setAttribute("aria-hidden", "true");
+    updateBodyModalState();
+  }
+
   function updateBodyModalState() {
     const hasOpenModal =
       !elements.contactModal.classList.contains("hidden") ||
       !elements.eventsModal.classList.contains("hidden") ||
+      !elements.managementModal.classList.contains("hidden") ||
       !elements.noticeModal.classList.contains("hidden");
     document.body.classList.toggle("modal-open", hasOpenModal);
   }

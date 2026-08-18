@@ -1,4 +1,4 @@
-const CACHE_NAME = "sahmt-pwa-v59";
+﻿const CACHE_NAME = "sahmt-pwa-v60";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -93,3 +93,4 @@ self.addEventListener("fetch", (event) => {
       })
   );
 });
+
