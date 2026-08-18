@@ -1,4 +1,4 @@
-(async function () {
+﻿(async function () {
   const fallbackData = window.SAHMT_DATA;
   const contactsPayload = window.SAHMT_CONTACTS;
   const fallbackNoticesPayload = {
@@ -40,7 +40,7 @@
   ];
   const vacationSheetTitle = "FERIAS 2026";
   const defaultSiteUrl = fallbackData?.siteUrl || "https://sites.google.com/view/sahmt/in%C3%ADcio";
-  const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsgest-o.github.io/?embed=1&from=escala";
+  const managementSiteUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsGESTAO.github.io/?embed=1&from=escala";
   const eventsUrl = "https://anestesiahmtforms.github.io/anestesiahmtformsEVENTOSDEESCALA.github.io/?embed=1&v=20260816-2";
   const syncConfig = window.SAHMT_SYNC_CONFIG || {};
   const siglaStateStorageKey = "sahmt-sigla-checks-v1";
@@ -984,7 +984,7 @@
 
     const meta = document.createElement("p");
     meta.className = "contact-card__meta";
-    meta.textContent = [contact.role, contact.scaleFormatted].filter(Boolean).join(" • ") || "Equipe SAHMT";
+    meta.textContent = [contact.role, contact.scaleFormatted].filter(Boolean).join(" â€¢ ") || "Equipe SAHMT";
 
     titleWrap.append(siglaBadge, name, meta);
     header.appendChild(titleWrap);
@@ -1351,3 +1351,4 @@
     return `${year}-${month}-${day}`;
   }
 })();
+
